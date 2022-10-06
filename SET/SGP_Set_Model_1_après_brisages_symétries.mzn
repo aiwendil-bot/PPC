@@ -22,8 +22,10 @@ constraint forall(i in WEEKS, j in NBGROUPS)(card(solution[i,j]) = p)
            /\
            forall(i in WEEKS)(partition_set([solution[i,j] | j in NBGROUPS],PLAYERS))
            /\
-           forall(p1,p2 in PLAYERS, g1,g2 in NBGROUPS, w1,w2 in WEEKS)(
-                 if p1 != p2 /\ (g1 != g2 \/ w1 != w2) /\ p1 in solution[g1,w1] /\ p2 in solution[g1,w1] /\ p1 in solution[g2,w2] then {p2} intersect solution[g2,w2] == {} endif );
+           forall (i in 1..w-1, j in i+1..w) (
+              forall (k,l in NBGROUPS) (
+            card(solution[i,k] intersect solution[j,l]) <= 1
+        ));
 
 %Contraintes brisage symétries (ordre feuille)
 
