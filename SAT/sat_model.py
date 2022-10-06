@@ -13,6 +13,10 @@ import numpy as np
 # w : nb de semaines
 def sat_model(p: int, g: int, w: int):
 
+    if w > 1 and p>g:
+        print("plus de joueurs par groupe que de groupes : insatisfiable")
+        return
+
     q = p*g #nombre de golfeurs
     model = Glucose4()
 
@@ -139,7 +143,7 @@ def sat_model(p: int, g: int, w: int):
         print("fixer les 1ers joueurs des p premiers groupes de chaque semaine")
         contraintes_1er_joueurs = []
         for l in range(1,w):
-            for k in range(min(p,g)):
+            for k in range(p):
                 contraintes_1er_joueurs.append([X[k,0,k,l].item()])
                 print((k,0,k,l))
         model.append_formula(contraintes_1er_joueurs)
@@ -149,7 +153,7 @@ def sat_model(p: int, g: int, w: int):
     if w > 1:
         contraintes_s2_g1 = []
         print("fixer 1er groupe 2e semaine")
-        for j in range(1,min(g,p)):
+        for j in range(1,p):
             contraintes_s2_g1.append([X[p*j,j,0,1].item()])
             print((p*j,j,0,1))
 
@@ -177,4 +181,4 @@ def sat_model(p: int, g: int, w: int):
              in range(g)])
 
 
-sat_model(3, 4, 4)
+sat_model(3,4, 2)
