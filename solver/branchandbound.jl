@@ -1,3 +1,5 @@
+include("../utils/contrainte.jl")
+include("../utils/filtrage.jl")
 function branch_and_bound!(liste_variables::Array{Variable, 1}, liste_contraintes::Array{Contrainte, 1})
     function inf_diff_card(left, right)
         left_var = liste_variables[left]

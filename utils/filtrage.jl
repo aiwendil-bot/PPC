@@ -68,7 +68,14 @@ function filtrage_card_intersection_inferieur_1!(liste_Variable::Vector{Variable
     return nothing
 end
 
-
+function filtrage_inegalite_min!(liste_Variable::Vector{Variable})
+    var1, var2 = liste_Variable
+    var2.min = filter((x) -> x > minimum(var1.min),var2.min)
+    var2.max = filter((x) -> x > minimum(var1.min),var2.max)
+    filtrage_individuel!(var1)
+    filtrage_individuel!(var2)
+    return nothing
+end
 
 
 

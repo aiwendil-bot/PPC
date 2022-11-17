@@ -1,3 +1,6 @@
+include("branchandbound.jl")
+include("solver_generique.jl")
+
 # w : nombre de semaine, g : nombre de groupe, p : nombre de joueur
 
 function genere_contraintes_SGP(w::Int, g::Int, p::Int)
@@ -13,6 +16,7 @@ function genere_contraintes_SGP(w::Int, g::Int, p::Int)
                 k1 = g*(s-1)+i
                 k2 = g*(s-1)+j
                 push!(liste_ctr, Contrainte([k1, k2], filtrage_intersection_vide!))
+                push!(liste_ctr, Contrainte([k1, k2], filtrage_inegalite_min!))
             end
         end
     end
@@ -57,7 +61,7 @@ end
 
 # w : nombre de semaine, g : nombre de groupe, p : nombre de joueur
 function solve_SGP(w::Int, g::Int, p::Int)
-    liste_var, liste_ctr = genere_contrainte_SGP(w, g, p)
+    liste_var, liste_ctr = genere_contraintes_SGP(w, g, p)
     fixer_variables!(liste_var, w, g, p)
     #println(liste_var)
     println("branch_and_bound")
@@ -91,4 +95,4 @@ function beau_print_res(matrice::Array{Array{Int, 1}, 2})
     end
 end
 
-solve_SGP(5,5,5)
+solve_SGP(4,4,4)

@@ -21,17 +21,7 @@ mutable struct Variable
         card_max,
         univers,
         est_close,
-        generer_random_id(20)
     )
-end
-
-function generer_random_id(taille::Int)::String
-    STR_RANDOM_ID_SEED = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ?.!+-*/^%&"
-    str = ""
-    for i in 1:taille
-        str *= rand(STR_RANDOM_ID_SEED)
-    end
-    return str
 end
 
 # Fait l'intersection la plus large des variables
@@ -76,7 +66,6 @@ function Base.show(io::IO, var::Variable)
         println(io, "\tmin : ", var.min)
         println(io, "\tmax : ", var.max)
         println(io, "\t", var.card_min, " <= Cardinal <= ", var.card_max)
-        println(io, "\tid: ", var.id)
     else
         print(io, "Variable(")
         print(io, "min:")
@@ -88,10 +77,6 @@ function Base.show(io::IO, var::Variable)
         show(io, var.card_min)
         print(io, " <= Cardinal <= ")
         show(io,  var.card_max)
-        print(sep)
-        print(io, "id:")
-        show(io, var.id)
-        print(io, ")")
     end
 end
 
@@ -101,8 +86,7 @@ function Base.:(==)(var1::Variable, var2::Variable)::Bool
     egalite_max = (var1.max == var2.max)
     egalite_card_min = (var1.card_min == var2.card_min)
     egalite_card_max = (var1.card_max == var2.card_max)
-    egalite_id = (var1.id == var2.id)
-    return egalite_min && egalite_max && egalite_card_min && egalite_card_max && egalite_id
+    return egalite_min && egalite_max && egalite_card_min && egalite_card_max
 end
 
 # Vérifie si la variable reste valide, ie qu'il reste des solutions possibles.
