@@ -16,7 +16,6 @@ function genere_contraintes_SGP(w::Int, g::Int, p::Int)
                 k1 = g*(s-1)+i
                 k2 = g*(s-1)+j
                 push!(liste_ctr, Contrainte([k1, k2], filtrage_intersection_vide!))
-                push!(liste_ctr, Contrainte([k1, k2], filtrage_inegalite_min!))
             end
         end
     end
@@ -95,4 +94,4 @@ function beau_print_res(matrice::Array{Array{Int, 1}, 2})
     end
 end
 
-solve_SGP(4,4,4)
+solve_SGP(7,5,5)

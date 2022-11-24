@@ -9,7 +9,6 @@ mutable struct Variable
     univers::Set{Int64}
 
     est_close::Bool
-    id::String
 
     Variable(min::Set{Int64}, max::Set{Int64},
             card_min::Int64, card_max::Int64,
@@ -100,6 +99,7 @@ function verifie_validite(var::Variable)::Bool
 end
 
 # Vérifie si la variable est close.
+# si max = min ou si #min = card_max
 function verifie_close(var::Variable)::Bool
     close = false
     close = close || var.min == var.max

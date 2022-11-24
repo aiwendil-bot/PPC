@@ -31,16 +31,11 @@ constraint forall(i in WEEKS, j in NBGROUPS)(card(solution[i,j]) = p)
 
 % première contrainte : on ne peut pas ordonner un set dans minizinc
 
-%contrainte ordonner les groupes d'une même semaine :
-constraint forall(i in WEEKS, j in 1..(g-1))(min(solution[i,j]) < min(solution[i,j+1]));
-
-%ordonner les semaines : (fait avec le max car pas accès au 2e élément
-
-constraint forall(i in 1..(w-1))(max(solution[i,1]) < max(solution[i+1,1]) );
-
 %fixer la 1ère semaine: 
 
 constraint forall(i in NBGROUPS, j in SIZEGROUPS) (((i-1)*p + j) in solution[1,i]);
+
+%fixer les p premiers joueurs dans les p premiers groupes
 
 constraint forall(i in 2..w, j in SIZEGROUPS) (j in solution[i,j]);
 

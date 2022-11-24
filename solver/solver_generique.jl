@@ -1,5 +1,8 @@
+
+
 function solver_generique!(liste_variables::Array{Variable, 1}, liste_contraintes::Array{Contrainte, 1})
-    # tableau qui associe toutes les contraintes d'une variable à l'indice de cet dernière dans liste_variables
+
+    # tableau qui associe toutes les contraintes d'une variable à l'indice de cette dernière dans liste_variables
     array_contrainte_variable = [
         findall(ctr -> indice in ctr.liste_indice_arguments, liste_contraintes)
         for indice in 1:length(liste_variables)
@@ -8,14 +11,24 @@ function solver_generique!(liste_variables::Array{Variable, 1}, liste_contrainte
     liste_filtrage_restant = collect(length(liste_contraintes):-1:1)
     infaisable = false
     while !isempty(liste_filtrage_restant) && !infaisable
+        
+        #on dépile la contrainte
         indice_ctr = pop!(liste_filtrage_restant)
         ctr = liste_contraintes[indice_ctr]
+        
+        #on copie les variables associées à la contrainte
         arguments = [deepcopy(liste_variables[i]) for i in ctr.liste_indice_arguments]
+
+        #on filtre les variables selon la contrainte
         filtrer!(ctr, liste_variables)
+        
+        #pour chaque variable concernée par la contrainte
         for indice_var in ctr.liste_indice_arguments
             var = liste_variables[indice_var]
+            #s'il reste des valeurs possibles pour la variable
             if verifie_validite(var)
-                if !(var in arguments) # A changer
+                #si la variable a changé
+                if !(var in arguments)
                     for indice in array_contrainte_variable[indice_var]
                         #Ne pas mettre plusieurs fois la même contrainte en attente.
                         if !(indice in liste_filtrage_restant)

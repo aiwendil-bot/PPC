@@ -1,4 +1,4 @@
-using JuMP, Gurobi, MathOptInterface, LinearAlgebra#, CPLEX
+using JuMP, Gurobi, MathOptInterface, LinearAlgebra
 function IP(w,g,p,q)
 	m = Model(with_optimizer(Gurobi.Optimizer))
 	
