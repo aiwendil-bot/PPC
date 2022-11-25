@@ -22,6 +22,9 @@ function solver_generique!(liste_variables::Array{Variable, 1}, liste_contrainte
         #on filtre les variables selon la contrainte
         filtrer!(ctr, liste_variables)
         
+        #réveille seulement les contraintes liées à la variable qui vient
+        #d'être modifiée
+        
         #pour chaque variable concernée par la contrainte
         for indice_var in ctr.liste_indice_arguments
             var = liste_variables[indice_var]

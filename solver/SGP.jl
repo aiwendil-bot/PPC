@@ -3,7 +3,7 @@ include("solver_generique.jl")
 
 # w : nombre de semaine, g : nombre de groupe, p : nombre de joueur
 
-function genere_contraintes_SGP(w::Int, g::Int, p::Int)
+function genere_contraintes_SGP(p::Int, g::Int, w::Int)
     q = g * p # nombre de joueurs
     joueurs = Set(collect(1:q))
     #variables = groupes
@@ -35,8 +35,9 @@ function genere_contraintes_SGP(w::Int, g::Int, p::Int)
     return liste_var, liste_ctr
 end
 
-#fixe la première semaines, les premiers joueurs des p premiers groupes
-function fixer_variables!(liste_var::Array{Variable, 1}, w::Int, g::Int, p::Int)
+#fixe la première semaines, les premiers joueurs des p premiers groupes de chaque semaine
+#todo : fixer les joueurs des p derniers groupes de la 2e semaine
+function fixer_variables!(liste_var::Array{Variable, 1}, p::Int, g::Int, w::Int)
     s1 = 1
     s2 = 2
     k = 1
@@ -59,16 +60,16 @@ function fixer_variables!(liste_var::Array{Variable, 1}, w::Int, g::Int, p::Int)
 end
 
 # w : nombre de semaine, g : nombre de groupe, p : nombre de joueur
-function solve_SGP(w::Int, g::Int, p::Int)
-    liste_var, liste_ctr = genere_contraintes_SGP(w, g, p)
-    fixer_variables!(liste_var, w, g, p)
+function solve_SGP(p::Int, g::Int,w::Int)
+    liste_var, liste_ctr = genere_contraintes_SGP(p, g,w)
+    fixer_variables!(liste_var, p, g,w)
     #println(liste_var)
     println("branch_and_bound")
     @time faisable = branch_and_bound!(liste_var, liste_ctr)
     println(faisable ? "faisable" : "infaisable")
     if faisable
         #println(liste_var)
-        matrice = listes_variables_vers_matrice(liste_var, w, g, p)
+        matrice = listes_variables_vers_matrice(liste_var, p, g,w)
         beau_print_res(matrice)
     end
 end
@@ -94,4 +95,4 @@ function beau_print_res(matrice::Array{Array{Int, 1}, 2})
     end
 end
 
-solve_SGP(7,5,5)
+solve_SGP(5,5,5)

@@ -13,6 +13,7 @@ function branch_and_bound!(liste_variables::Array{Variable, 1}, liste_contrainte
 
             # Stratégie 2 : brancher sur la variable qui touche le plus de contraintes
             #sort!(liste_non_close, by = e -> nb_occurences_contraintes(e,liste_variables,liste_contraintes),rev=true)
+            
             indice_branchement = liste_non_close[1]
             var = liste_variables[indice_branchement]
 
