@@ -11,9 +11,9 @@ mutable struct Variable
     est_close::Bool
 
     Variable(min::Set{Int64}, max::Set{Int64},
-            card_min::Int64, card_max::Int64,
-            univers::Set{Int64},
-            est_close::Bool = false) = new(
+        card_min::Int64, card_max::Int64,
+        univers::Set{Int64},
+        est_close::Bool=false) = new(
         Set{Int64}(min),
         Set{Int64}(max),
         card_min,
@@ -28,8 +28,9 @@ function intersection(var1::Variable, var2::Variable)::Variable
     min = intersect(var1.min, var2.min)
     max = intersect(var1.max, var2.max) # On ne peut pas trouver moins large
     card_min = length(min)
-    max = length(max)
-    return Variable(min, max, card_min, card_max)
+    card_max = length(max)
+    univers = intersect(var1.univers, var2.univers)
+    return Variable(min, max, card_min, card_max, univers)
 end
 
 # Génère une variable vide
@@ -75,7 +76,7 @@ function Base.show(io::IO, var::Variable)
         print(io, sep)
         show(io, var.card_min)
         print(io, " <= Cardinal <= ")
-        show(io,  var.card_max)
+        show(io, var.card_max)
     end
 end
 
@@ -88,7 +89,7 @@ function Base.:(==)(var1::Variable, var2::Variable)::Bool
     return egalite_min && egalite_max && egalite_card_min && egalite_card_max
 end
 
-# Vérifie si la variable reste valide, ie qu'il reste des solutions possibles.
+# Vérifie si la variable reste valide, ie qu'il n'y a pas de contradiction
 function verifie_validite(var::Variable)::Bool
     valide = true
     valide = valide && intersect(var.min, var.max) == var.min
@@ -111,7 +112,11 @@ end
 # Vérifie si la variable est vide.
 function est_vide(var::Variable)::Bool
     vide = false
-    if length(var.max) == 0 vide = true end
-    if var.car_max == 0 vide = true end
+    if length(var.max) == 0
+        vide = true
+    end
+    if var.car_max == 0
+        vide = true
+    end
     return vide
 end

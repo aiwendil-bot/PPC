@@ -3,16 +3,16 @@ include("../utils/filtrage.jl")
 
 function branch_and_bound!(liste_variables::Array{Variable, 1}, liste_contraintes::Array{Contrainte, 1})
 
-    faisable = solver_generique!(liste_variables, liste_contraintes)
+    faisable = propagation!(liste_variables, liste_contraintes)
     if faisable
         #liste des variables non closes
         liste_non_close = findall(var -> !verifie_close(var), liste_variables)
         if !isempty(liste_non_close) # condition d'arrêt
             # Stratégie 1 : brancher sur la variable la plus proche d'être close
-            sort!(liste_non_close, by = e -> liste_variables[e].card_max - length(liste_variables[e].min), )
+            #sort!(liste_non_close, by = e -> liste_variables[e].card_max - length(liste_variables[e].min), )
 
             # Stratégie 2 : brancher sur la variable qui touche le plus de contraintes
-            #sort!(liste_non_close, by = e -> nb_occurences_contraintes(e,liste_variables,liste_contraintes),rev=true)
+            sort!(liste_non_close, by = e -> nb_occurences_contraintes(e,liste_variables,liste_contraintes),rev=true)
             
             indice_branchement = liste_non_close[1]
             var = liste_variables[indice_branchement]
@@ -49,7 +49,7 @@ function branch_and_bound!(liste_variables::Array{Variable, 1}, liste_contrainte
                 end
             else
                 #sinon, on continue
-                faisable_temp = solver_generique!(liste_variables, liste_contraintes)
+                faisable_temp = propagation!(liste_variables, liste_contraintes)
                 faisable = faisable_temp # pas faisable
             end
         end
@@ -60,7 +60,7 @@ end
 function nb_occurences_contraintes(indice::Int64,liste_variables::Array{Variable, 1},liste_contraintes::Array{Contrainte, 1})::Int64
     compteur = 0
     for contrainte in liste_contraintes
-        if indice in contrainte.liste_indice_arguments
+        if indice in contrainte.liste_indices_variables
             compteur += 1
         end
     end

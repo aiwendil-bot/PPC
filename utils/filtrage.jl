@@ -1,7 +1,7 @@
 include("variable.jl")
 
 function filtrer!(ctr::Contrainte, liste_variables::Vector{Variable})
-    liste_arguments = [liste_variables[i] for i in ctr.liste_indice_arguments]
+    liste_arguments = [liste_variables[i] for i in ctr.liste_indices_variables]
     ctr.filtrage!(liste_arguments)
     for var in liste_arguments
         filtrage_individuel!(var)
