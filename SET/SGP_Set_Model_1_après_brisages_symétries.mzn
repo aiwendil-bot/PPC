@@ -35,7 +35,14 @@ constraint forall(i in WEEKS, j in NBGROUPS)(card(solution[i,j]) = p)
 
 constraint forall(i in NBGROUPS, j in SIZEGROUPS) (((i-1)*p + j) in solution[1,i]);
 
-%fixer les p premiers joueurs dans les p premiers groupes
+% premier groupe 2e semaine
+constraint forall(j in SIZEGROUPS) ((1 + p*(j-1)) in solution[2,1]);
+
+% p derniers groupes 2e semaine
+
+constraint forall(j in (g-p+1)..g) ( g*(p-1) + j in solution[2,j]);
+
+% p premiers groupe de chaque semaine >=2
 
 constraint forall(i in 2..w, j in SIZEGROUPS) (j in solution[i,j]);
 

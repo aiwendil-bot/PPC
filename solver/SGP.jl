@@ -58,6 +58,7 @@ function fixer_variables!(liste_var::Array{Variable, 1}, p::Int, g::Int, w::Int)
         for i in g-p+1:g
             ajouter!(liste_var[g+i],k)
             k += 1
+            println(g*(p-1)+i)
             
         end    
         
@@ -92,7 +93,7 @@ function solve_SGP(p::Int, g::Int,w::Int,symetries_on::Bool)
     if faisable
         #println(liste_var)
         matrice = listes_variables_vers_matrice(liste_var, p, g,w)
-        #beau_print_res(matrice)
+        beau_print_res(matrice)
     end
     return faisable
 end
@@ -135,11 +136,13 @@ for p in 2:5
     end
 end            
 =#
-
+#=
 for param in [[3,4,2],[3,4,3],[3,4,4],[3,5,2],[3,5,3],[4,5,2],[4,5,3],[4,6,2],[5,5,2],[5,5,3],[5,5,4],[5,5,5],[5,5,6]]
         time_sans = @elapsed solve_SGP(param[1], param[2],param[3], false)
         time_avec = @elapsed solve_SGP(param[1], param[2],param[3], true)
         if solve_SGP(param[1], param[2],param[3],true)
             println("$(param[1]) & $(param[2]) & $(param[3]) & $time_sans & $time_avec" )
         end
-end    
+end   
+=#
+solve_SGP(3,4,2,true)
