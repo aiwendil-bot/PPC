@@ -3,9 +3,11 @@ include("variable.jl")
 function filtrer!(ctr::Contrainte, liste_variables::Vector{Variable})
     liste_arguments = [liste_variables[i] for i in ctr.liste_indices_variables]
     ctr.filtrage!(liste_arguments)
+    #=
     for var in liste_arguments
         filtrage_individuel!(var)
     end
+    =#
 end
 
 
@@ -43,8 +45,15 @@ end
 
 function filtrage_intersection_vide!(liste_Variable::Vector{Variable})
     var1, var2 = liste_Variable
-    setdiff!(var1.max, var2.min)
-    setdiff!(var2.max, var1.min)
+    if  verifie_close(var2)
+        setdiff!(var1.max, var2.min)
+        setdiff!(var1.min, var2.min)
+
+    elseif verifie_close(var1)
+        setdiff!(var2.max, var1.min)
+        setdiff!(var2.min, var1.min)
+
+    end
     return nothing
 end
 

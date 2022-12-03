@@ -9,8 +9,8 @@ function propagation!(liste_variables::Array{Variable, 1}, liste_contraintes::Ar
     ]
 
     liste_filtrage_restant = collect(length(liste_contraintes):-1:1)
-    infaisable = false
-    while !isempty(liste_filtrage_restant) && !infaisable
+    faisable = true
+    while !isempty(liste_filtrage_restant) && faisable
         
         #on dépile la première contrainte
         indice_ctr = pop!(liste_filtrage_restant)
@@ -40,9 +40,9 @@ function propagation!(liste_variables::Array{Variable, 1}, liste_contraintes::Ar
                     end
                 end
             else
-                infaisable = true
+                faisable = false
             end
         end
     end
-    return !infaisable # retourne true si le solver a trouvé le problème faisable.
+    return faisable # retourne true si le solver a trouvé le problème faisable.
 end
