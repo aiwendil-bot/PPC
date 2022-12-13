@@ -54,7 +54,7 @@ end
 # Ajoute une valeur au set min
 function ajouter!(var::Variable, valeur::Int)
     push!(var.min, valeur)
-    filtrage_individuel!(var)
+    #filtrage_individuel!(var)
 end
 
 # On modifie le print lors d'un print(var::Variable) ou d'un println(var::Variable)

@@ -9,10 +9,10 @@ function branch_and_bound!(liste_variables::Array{Variable, 1}, liste_contrainte
         liste_non_close = findall(var -> !verifie_close(var), liste_variables)
         if !isempty(liste_non_close) # condition d'arrêt
             # Stratégie 1 : brancher sur la variable la plus proche d'être close
-            #sort!(liste_non_close, by = e -> liste_variables[e].card_max - length(liste_variables[e].min), )
+            sort!(liste_non_close, by = e -> liste_variables[e].card_max - length(liste_variables[e].min), )
 
             # Stratégie 2 : brancher sur la variable qui touche le plus de contraintes
-            sort!(liste_non_close, by = e -> nb_occurences_contraintes(e,liste_variables,liste_contraintes),rev=true)
+            #sort!(liste_non_close, by = e -> nb_occurences_contraintes(e,liste_variables,liste_contraintes),rev=true)
             
             indice_branchement = liste_non_close[1]
             var = liste_variables[indice_branchement]
@@ -25,7 +25,6 @@ function branch_and_bound!(liste_variables::Array{Variable, 1}, liste_contrainte
             faisable_temp = false
             liste_variables_temp = []
 
-            #tant qu'on n'a pas tout testé pour cette variable & que c'est infaisable
             while indice_valeur <= n && !faisable_temp
                 
                 #on fait une copie des variables à ce branchement 

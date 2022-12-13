@@ -92,7 +92,7 @@ function solve_SGP(p::Int, g::Int,w::Int,symetries_on::Bool)
     if faisable
         #println(liste_var)
         matrice = listes_variables_vers_matrice(liste_var, p, g,w)
-        beau_print_res(matrice)
+        #beau_print_res(matrice)
     end
     return faisable
 end
@@ -122,7 +122,6 @@ solve_SGP(5,5,5,true)
 for p in 2:5
     for g in p:6
         for w in 2:5
- grbgetkey 6a090072-72f9-11ed-b844-0242ac190003           println("$p & $g & $w")
             if !([p,g,w] in [[3,3,5],[3,4,5],[3,5,4],[3,5,5],[3,6,5],[4,5,4],[4,5,5],[4,6,2],[4,6,3],[4,6,4],[4,6,5]])
             time_sans = @elapsed solve_SGP(p,g,w, false)
             time_avec = @elapsed solve_SGP(p,g,w, true)
@@ -144,4 +143,3 @@ for param in [[3,4,2],[3,4,3],[3,4,4],[3,5,2],[3,5,3],[4,5,2],[4,5,3],[4,6,2],[5
         end
 end   
 =#
-

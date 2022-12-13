@@ -10,50 +10,14 @@ function filtrer!(ctr::Contrainte, liste_variables::Vector{Variable})
     =#
 end
 
-
-function filtrage_individuel!(var::Variable)
-    if !var.est_close
-        nmax = length(var.max)
-        nmin = length(var.min)
-
-        # card Max > taille de set Max
-        if nmax < var.card_max
-            var.card_max = nmax
-        end
-
-        # card Min < taille de set Min
-        if nmin > var.card_min
-            var.card_min = nmin
-        end
-
-        # Card min = taille de  Set max
-        if nmax == var.card_min
-            union!(var.min, var.max)
-        end
-
-        # Card maw = taille de  Set min
-        if nmin == var.card_max
-            intersect!(var.max, var.min)
-        end
-
-    end
-    verifie_close(var)
-    return nothing
-end
-
 # Filtrages SGP
 
 function filtrage_intersection_vide!(liste_Variable::Vector{Variable})
     var1, var2 = liste_Variable
-    if  verifie_close(var2)
         setdiff!(var1.max, var2.min)
-        setdiff!(var1.min, var2.min)
 
-    elseif verifie_close(var1)
         setdiff!(var2.max, var1.min)
-        setdiff!(var2.min, var1.min)
 
-    end
     return nothing
 end
 
@@ -71,8 +35,8 @@ function filtrage_card_intersection_inferieur_1!(liste_Variable::Vector{Variable
         setdiff!(var1.max, min_v2)
 
         # Utile pour la suite du problème
-        filtrage_individuel!(var1)
-        filtrage_individuel!(var2)
+        #filtrage_individuel!(var1)
+        #filtrage_individuel!(var2)
     end
     return nothing
 end
