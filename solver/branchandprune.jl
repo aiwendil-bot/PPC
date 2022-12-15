@@ -1,7 +1,7 @@
 include("../utils/contrainte.jl")
 include("../utils/filtrage.jl")
 
-function branch_and_bound!(liste_variables::Array{Variable, 1}, liste_contraintes::Array{Contrainte, 1})
+function branch_and_prune!(liste_variables::Array{Variable, 1}, liste_contraintes::Array{Contrainte, 1})
 
     faisable = propagation!(liste_variables, liste_contraintes)
     if faisable
@@ -33,7 +33,7 @@ function branch_and_bound!(liste_variables::Array{Variable, 1}, liste_contrainte
 
                 #on ajoute la var candidate au min de la variable
                 ajouter!(liste_variables_temp[indice_branchement], valeur_ajout)
-                faisable_temp = branch_and_bound!(liste_variables_temp, liste_contraintes)
+                faisable_temp = branch_and_prune!(liste_variables_temp, liste_contraintes)
                 indice_valeur += 1
 
                 # On sait le problème infaisable avec, alors on le retire.

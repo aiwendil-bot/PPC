@@ -33,28 +33,10 @@ function intersection(var1::Variable, var2::Variable)::Variable
     return Variable(min, max, card_min, card_max, univers)
 end
 
-# Génère une variable vide
-generer_Variable_Vide()::Variable = Variable(Set{Int64}(), Set{Int64}(), 0, 0, true)
-
-function generer_Variable_fixe(valeur::Set{Int})::Variable
-    n = length(valeur)
-    return Variable(valeur, valeur, n, n, true)
-end
-
-# Fixe une variable à une valeur.
-function fixer!(var::Variable, valeur::Set{Int})::Variable
-    var.min = valeur
-    var.max = valeur
-    var.card_min = length(valeur)
-    var.card_max = var.card_min
-    var.est_close = true
-    return var
-end
 
 # Ajoute une valeur au set min
 function ajouter!(var::Variable, valeur::Int)
     push!(var.min, valeur)
-    #filtrage_individuel!(var)
 end
 
 # On modifie le print lors d'un print(var::Variable) ou d'un println(var::Variable)
@@ -109,14 +91,3 @@ function verifie_close(var::Variable)::Bool
     return close
 end
 
-# Vérifie si la variable est vide.
-function est_vide(var::Variable)::Bool
-    vide = false
-    if length(var.max) == 0
-        vide = true
-    end
-    if var.car_max == 0
-        vide = true
-    end
-    return vide
-end

@@ -1,4 +1,4 @@
-include("branchandbound.jl")
+include("branchandprune.jl")
 include("propagation.jl")
 
 # w : nombre de semaine, g : nombre de groupe, p : nombre de joueur/groupe
@@ -81,18 +81,18 @@ function solve_SGP(p::Int, g::Int,w::Int,symetries_on::Bool)
 
     @assert g >= p "g doit être >= p"
 
-    #println("")
+    println("")
     liste_var, liste_ctr = genere_contraintes_SGP(p, g, w)
     if symetries_on
         fixer_variables!(liste_var, p, g,w)
     end
-    #println("branch_and_bound")
-    faisable = branch_and_bound!(liste_var, liste_ctr)
-    #println(faisable ? "faisable" : "infaisable")
+    println("branch_and_prune")
+    faisable = branch_and_prune!(liste_var, liste_ctr)
+    println(faisable ? "faisable" : "infaisable")
     if faisable
         #println(liste_var)
         matrice = listes_variables_vers_matrice(liste_var, p, g,w)
-        #beau_print_res(matrice)
+        beau_print_res(matrice)
     end
     return faisable
 end
@@ -117,7 +117,22 @@ function beau_print_res(matrice::Array{Array{Int, 1}, 2})
         end
     end
 end
-solve_SGP(5,5,5,true)
+
+
+function main(args)
+
+    p = parse(Int64,args[1])
+    g = parse(Int64,args[2])
+    w = parse(Int64,args[3])
+    symetries_on = parse(Bool,args[4])
+
+    @time solve_SGP(p,g,w,symetries_on)
+    
+end
+
+
+main(ARGS)
+
 #=
 for p in 2:5
     for g in p:6

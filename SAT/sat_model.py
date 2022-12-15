@@ -140,32 +140,26 @@ def sat_model(p: int, g: int, w: int):
 
     #fixer les 1ers joueurs des p premiers groupes de chaque semaine
     if w > 1:
-        print("fixer les 1ers joueurs des p premiers groupes de chaque semaine")
         contraintes_1er_joueurs = []
         for l in range(1,w):
             for k in range(p):
                 contraintes_1er_joueurs.append([X[k,0,k,l].item()])
-                print((k,0,k,l))
         model.append_formula(contraintes_1er_joueurs)
 
     #fixer 1er groupe 2e semaine
 
     if w > 1:
         contraintes_s2_g1 = []
-        print("fixer 1er groupe 2e semaine")
         for j in range(1,p):
             contraintes_s2_g1.append([X[p*j,j,0,1].item()])
-            print((p*j,j,0,1))
 
         model.append_formula(contraintes_s2_g1)
 
     #fixer les derniers joueurs des p derniers groupe de la 2e semaine
     if w > 1:
         contraintes_s2_pderniers = []
-        print("fixer les derniers joueurs des p derniers groupe de la 2e semaine")
         for j in range(p-g+1,p):
             contraintes_s2_pderniers.append([X[p*(g-1)+j,p-1,g-p+j,1].item()])
-            print((p*(g-1)+j,p-1,g-p+j,1))
 
 
         model.append_formula(contraintes_s2_pderniers)
